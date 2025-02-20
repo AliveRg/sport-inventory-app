@@ -11,7 +11,7 @@
           </div>
         </div>
 
-        <div v-if="Array.isArray(item.gallery) && item.gallery.length">
+        <div v-if="Array.isArray(item.gallery) || item.gallery.length">
           <label for="gallery">Галерея:</label>
           <input type="file" id="gallery" @change="handleGalleryChange" accept="image/*" multiple />
           <div v-if="item.gallery.length">
@@ -76,6 +76,12 @@ onMounted(() => {
   })
 })
 const saveItem = () => {
+  if (!item.value.avatar) {
+    item.value.avatar = 'https://loremflickr.com/640/480'
+  }
+  if (!Array.isArray(item.value.gallery) || item.value.gallery.length === 0) {
+    item.value.gallery = ['https://loremflickr.com/640/480']
+  }
   if (isEdit) {
     inventory.updateItem(item.value)
   } else {

@@ -11,7 +11,7 @@
           </div>
         </div>
 
-        <div>
+        <div v-if="Array.isArray(item.gallery) && item.gallery.length">
           <label for="gallery">Галерея:</label>
           <input type="file" id="gallery" @change="handleGalleryChange" accept="image/*" multiple />
           <div v-if="item.gallery.length">
@@ -64,19 +64,18 @@ const item = ref({
 })
 
 onMounted(() => {
-  console.log(isEdit)
-
   inventory.fetchItems().then(() => {
     if (!inventory.items.length) {
       inventory.items = JSON.parse(localStorage.getItem('inventoryItems')) || []
     }
     item.value = inventory.items.find((i) => i.id == route.params.id) || {}
+
+    if (!item.value.gallery) {
+      item.value.gallery = []
+    }
   })
 })
-
 const saveItem = () => {
-  console.log('itemAdd')
-
   if (isEdit) {
     inventory.updateItem(item.value)
   } else {

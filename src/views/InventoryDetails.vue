@@ -30,8 +30,6 @@ const inventory = useInventoryStore()
 const item = ref(null)
 
 onMounted(() => {
-  console.log(inventory.items.length)
-
   inventory.fetchItems().then(() => {
     if (!inventory.items.length) {
       inventory.items = JSON.parse(localStorage.getItem('inventoryItems')) || []
